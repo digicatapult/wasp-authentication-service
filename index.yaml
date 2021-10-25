@@ -1,0 +1,23 @@
+apiVersion: v1
+entries:
+  wasp-authentication-service:
+  - apiVersion: v2
+    appVersion: 0.0.18
+    created: "2021-10-25T16:52:20.792762324Z"
+    dependencies:
+    - condition: postgresql.enabled
+      name: postgresql
+      repository: https://charts.bitnami.com/bitnami
+      version: ^10.12.2
+    description: A Helm chart for wasp-authentication-service
+    digest: 7650ae952ad4346383b5aa90574f448aa05984f3e1d5836ba7c449a19f858f19
+    maintainers:
+    - email: opensource@digicatapult.org.uk
+      name: digicatapult
+      url: www.digicatapult.org.uk
+    name: wasp-authentication-service
+    type: application
+    urls:
+    - https://digicatapult.github.io/wasp-authentication-service/wasp-authentication-service-0.0.18.tgz
+    version: 0.0.18
+generated: "2021-10-25T16:52:20.786502193Z"

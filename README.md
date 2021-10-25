@@ -1,25 +1,56 @@
-# wasp-service-template
+# wasp-authentication-service
 
-Template repository for bootstrapping new WASP services. Use this repo as a template in github when creating new `WASP` services. When forked a new pull request will automatically be created in the new repository to apply templating. Before merging you should also give access to the forked repo the `GITHUB_TOKEN` organisation secret prior to merging. This will allow the release workflow to run successfully on merging.
+Authentication service for `WASP`. Handles the storage, retrieval and validation of tokens.
 
-## What this repo provides
+## Getting started
 
-This repo provides:
+`wasp-authentication-service` can be run in a similar way to most nodejs application. First install required dependencies using `npm`:
 
-- basic node.js project structure for a WASP service
-- linting with WASP prettier configuration
-- open-sourcing materials
-- Docker file
-- A simple helm chart for the service
-- A service with a healthcheck endpoint on `/health`
-- Testing apparatus using `mocha`, `chai` and `supertest`
-- Github workflows for testing and release
+```sh
+npm install
+```
+
+`wasp-authentication-service` depends on a `postgresql` database dependency which can be brought up locally using docker:
+
+```sh
+docker-compose up -d
+```
+
+Finally the database must be initialised with:
+
+```sh
+npx knex migrate:latest
+```
+
+And finally you can run the application in development mode with:
+
+```sh
+npm run dev
+```
+
+Or run tests with:
+
+```sh
+npm test
+```
 
 ## Environment Variables
 
-`wasp-service-template` is configured primarily using environment variables as follows:
+`wasp-authentication-service` is configured primarily using environment variables as follows:
 
-| variable  | required | default | description                                                                          |
-| :-------- | :------: | :-----: | :----------------------------------------------------------------------------------- |
-| LOG_LEVEL |    N     | `info`  | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
-| PORT      |    N     |  `80`   | Port on which the service will listen                                                |
+| variable                           | required |         default         | description                                                                          |
+| :--------------------------------- | :------: | :---------------------: | :----------------------------------------------------------------------------------- |
+| LOG_LEVEL                          |    N     |         `info`          | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
+| PORT                               |    N     |          `80`           | Port on which the service will listen                                                |
+| API_VERSION                        |    N     |  `package.json version` | Official API version                                                                 |
+| API_MAJOR_VERSION                  |    N     |          `v1`           | Major API version                                                                    |
+| JWT_SECRET                         |    Y     |            -            | Secret for validating JSON web-tokens                                                |
+| DB_HOST                            |    Y     |            -            | Hostname for the db                                                                  |
+| DB_PORT                            |    N     |          5432           | Port to connect to the db                                                            |
+| DB_NAME                            |    N     |     `authentication`    | Name of the database to connect to                                                   |
+| DB_USERNAME                        |    Y     |            -            | Username to connect to the database with                                             |
+| DB_PASSWORD                        |    Y     |            -            | Password to connect to the database with                                             |
+
+## Database structure
+
+The structure of the database backing `wasp-authentication-service` can be found in [docs/db.md](./docs/db.md)

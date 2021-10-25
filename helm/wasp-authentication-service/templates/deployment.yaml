@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "wasp-authentication-service.fullname" . }}
+  labels:
+    {{- include "wasp-authentication-service.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ include "wasp-authentication-service.fullname" . }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secret.yaml") . | sha256sum }}
+      labels:
+        name: {{ include "wasp-authentication-service.fullname" . }}
+    spec:
+      {{- include "wasp-authentication-service.imagePullSecrets" . | indent 6 }}
+      initContainers:
+        - name: {{ include "wasp-authentication-service.fullname" . }}-init
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          command: ['npx', 'knex', "migrate:latest", "--env", "production"]
+          env:
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-config
+                  key: dbHost
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-config
+                  key: dbPort
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-config
+                  key: dbName
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-secret
+                  key: dbUsername
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-secret
+                  key: dbPassword
+      containers:
+        - name: {{ include "wasp-authentication-service.fullname" . }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.config.port }}
+            initialDelaySeconds: 15
+            timeoutSeconds: 3
+            periodSeconds: 5
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-config
+                  key: port
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-secret
+                  key: jwtSecret
+            - name: LOG_LEVEL
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" .}}-config
+                  key: logLevel
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-config
+                  key: dbHost
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-config
+                  key: dbPort
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-config
+                  key: dbName
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-secret
+                  key: dbUsername
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "wasp-authentication-service.fullname" . }}-secret
+                  key: dbPassword

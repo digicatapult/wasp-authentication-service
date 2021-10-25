@@ -1,0 +1,14 @@
+{{- $fullName := include "wasp-authentication-service.fullname" . -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "wasp-authentication-service.fullname" . }}
+  labels:
+    {{- include "wasp-authentication-service.labels" . | nindent 4 }}
+spec:
+  selector:
+    name: {{ include "wasp-authentication-service.fullname" . }}
+  ports:
+    - protocol: 'TCP'
+      port: 80
+      targetPort: {{ .Values.config.port }}

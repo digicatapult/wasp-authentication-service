@@ -1,0 +1,4 @@
+# TODO remove when knexjs and pg are being used...
+
+ignores: ['knex', 'pg']
+skip-missing: true

@@ -1,0 +1,4 @@
+image:
+  repository: 'wasp-authentication-service'
+  tag: 'latest'
+  PullPolicy: Never

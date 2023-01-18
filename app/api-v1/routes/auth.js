@@ -1,4 +1,4 @@
-module.exports = function (authenticationService) {
+export default function (authenticationService) {
   const doc = {
     GET: async function (req, res) {
       const { authorization } = req.headers

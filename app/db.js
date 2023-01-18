@@ -1,8 +1,8 @@
-const knex = require('knex')
-const bcrypt = require('bcrypt')
-const moment = require('moment')
+import knex from 'knex'
+import bcrypt from 'bcrypt'
+import moment from 'moment'
 
-const env = require('./env')
+import env from './env.js'
 
 const client = knex({
   client: 'pg',
@@ -50,10 +50,4 @@ const validateCreateUserToken = async ({ name, expiry }) => {
   return name && name.length > 0 && moment.unix(expiry).isValid() && moment.unix(expiry).isAfter(Date.now())
 }
 
-module.exports = {
-  client,
-  addUserToken,
-  findUserTokens,
-  validateCreateUserToken,
-  revokeUserToken,
-}
+export { client, addUserToken, findUserTokens, validateCreateUserToken, revokeUserToken }

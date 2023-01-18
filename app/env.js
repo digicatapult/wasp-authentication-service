@@ -1,9 +1,12 @@
-const envalid = require('envalid')
-const dotenv = require('dotenv')
-const { version } = require('../package.json')
+import envalid from 'envalid'
+import dotenv from 'dotenv'
+
+import { version } from './version.js'
 
 if (process.env.NODE_ENV === 'test') {
   dotenv.config({ path: 'test/test.env' })
+} else {
+  dotenv.config()
 }
 
 const vars = envalid.cleanEnv(
@@ -26,4 +29,4 @@ const vars = envalid.cleanEnv(
   }
 )
 
-module.exports = vars
+export default vars

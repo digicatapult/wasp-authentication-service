@@ -1,7 +1,7 @@
-const { v4: uuidv4 } = require('uuid')
+import { v4 as uuidv4 } from 'uuid'
 
-const { decodeToken, encodeToken, isUuidInvalid } = require('../../validatorUtil')
-const { findUserTokens, addUserToken, revokeUserToken, validateCreateUserToken } = require('../../db')
+import { decodeToken, encodeToken, isUuidInvalid } from '../../validatorUtil.js'
+import { findUserTokens, addUserToken, revokeUserToken, validateCreateUserToken } from '../../db.js'
 
 function getTokenPayload(authHeader) {
   const result = decodeToken(authHeader)
@@ -42,9 +42,4 @@ async function deleteUserToken({ tokenId }) {
   }
 }
 
-module.exports = {
-  getTokenPayload,
-  getUserTokens,
-  postUserToken,
-  deleteUserToken,
-}
+export default { getTokenPayload, getUserTokens, postUserToken, deleteUserToken }

@@ -1,4 +1,4 @@
-exports.up = async (knex) => {
+export const up = async (knex) => {
   // check extension is not installed
   const [extInstalled] = await knex('pg_extension').select('*').where({ extname: 'uuid-ossp' })
 
@@ -36,7 +36,7 @@ exports.up = async (knex) => {
   })
 }
 
-exports.down = async (knex) => {
+export const down = async (knex) => {
   await knex.schema.dropTable('user_tokens')
   await knex.schema.dropTable('thing_tokens')
   await knex.raw('DROP EXTENSION "uuid-ossp"')

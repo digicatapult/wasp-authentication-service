@@ -1,4 +1,4 @@
-const { expect } = require('chai')
+import { expect } from 'chai'
 
 const assertUserToken = (actualResult, expectedResult) => {
   expect(actualResult).to.have.property('id')
@@ -14,7 +14,4 @@ const assertUserTokens = (actualResult, expectedResult) => {
   }
 }
 
-module.exports = {
-  assertUserToken,
-  assertUserTokens,
-}
+export { assertUserToken, assertUserTokens }

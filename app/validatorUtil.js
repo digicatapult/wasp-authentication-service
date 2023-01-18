@@ -1,7 +1,9 @@
-const jwt = require('jwt-simple')
-const moment = require('moment')
-const validator = require('validator')
-const { JWT_SECRET } = require('./env')
+import jwt from 'jwt-simple'
+import moment from 'moment'
+import validator from 'validator'
+import env from './env.js'
+
+const { JWT_SECRET } = env
 
 moment.suppressDeprecationWarnings = true // suppress warning on parse error, this is why we are using moment!!
 
@@ -53,8 +55,4 @@ const encodeToken = (id, userId, exp) => {
   }
 }
 
-module.exports = {
-  isUuidInvalid,
-  decodeToken,
-  encodeToken,
-}
+export { isUuidInvalid, decodeToken, encodeToken }

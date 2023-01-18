@@ -1,5 +1,5 @@
-const { isUuidInvalid } = require('../../../../../validatorUtil')
-module.exports = function (authenticationService) {
+import { isUuidInvalid } from '../../../../../validatorUtil.js'
+export default function (authenticationService) {
   const doc = {
     DELETE: async function (req, res) {
       const { 'user-id': userIdHeader } = req.headers

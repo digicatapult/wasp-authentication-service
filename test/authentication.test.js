@@ -1,11 +1,13 @@
-const { describe, it, beforeEach } = require('mocha')
-const { expect } = require('chai')
-const jwt = require('jwt-simple')
-const moment = require('moment')
+import { describe, it, beforeEach } from 'mocha'
+import { expect } from 'chai'
+import jwt from 'jwt-simple'
+import moment from 'moment'
 
-const { API_MAJOR_VERSION, JWT_SECRET } = require('../app/env')
-const { setupServer } = require('./helpers/server')
-const { setupDb } = require('./helpers/db')
+import env from '../app/env.js'
+import { setupServer } from './helpers/server.js'
+import { setupDb } from './helpers/db.js'
+
+const { JWT_SECRET } = env
 
 describe('authentication service - validate token', function () {
   const context = {}
@@ -23,7 +25,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().add('1', 'hour').unix()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('Authorization', `Bearer ${token}`)
+      context.response = await context.request.get('/v1/auth').set('Authorization', `Bearer ${token}`)
 
       expect(context.response.status).to.equal(200)
       expect(context.response.body).to.deep.equal({ sub, exp })
@@ -35,7 +37,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().add('1', 'hour').toISOString()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('Authorization', `Bearer ${token}`)
+      context.response = await context.request.get('/v1/auth').set('Authorization', `Bearer ${token}`)
 
       expect(context.response.status).to.equal(200)
       expect(context.response.body).to.deep.equal({ sub, exp })
@@ -47,7 +49,7 @@ describe('authentication service - validate token', function () {
       const exp = 'not a date'
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('Authorization', `Bearer ${token}`)
+      context.response = await context.request.get('/v1/auth').set('Authorization', `Bearer ${token}`)
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -59,7 +61,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().add('1', 'hour').unix()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('authorization', `Bearer ${token}`)
+      context.response = await context.request.get('/v1/auth').set('authorization', `Bearer ${token}`)
 
       expect(context.response.status).to.equal(200)
       expect(context.response.body).to.deep.equal({ sub, exp })
@@ -71,7 +73,7 @@ describe('authentication service - validate token', function () {
       const exp = 'not a date'
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('authorization', `Bearer ${token}`)
+      context.response = await context.request.get('/v1/auth').set('authorization', `Bearer ${token}`)
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -83,9 +85,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().add('1', 'hour').toISOString()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request
-        .get(`/${API_MAJOR_VERSION}/auth`)
-        .set('security', `Bearer ${token}Bearer `)
+      context.response = await context.request.get('/v1/auth').set('security', `Bearer ${token}Bearer `)
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -97,7 +97,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().add('1', 'hour').toISOString()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('Authorization', `Bearer${token}`)
+      context.response = await context.request.get('/v1/auth').set('Authorization', `Bearer${token}`)
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -109,7 +109,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().add('1', 'hour').toISOString()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('Authorization', `${token}Bearer `)
+      context.response = await context.request.get('/v1/auth').set('Authorization', `${token}Bearer `)
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -117,7 +117,7 @@ describe('authentication service - validate token', function () {
     })
 
     it('should return 401 (missing Swagger UI auth header)', async function () {
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`)
+      context.response = await context.request.get('/v1/auth')
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -129,7 +129,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().toISOString()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('Authorization', `Bearer ${token}`)
+      context.response = await context.request.get('/v1/auth').set('Authorization', `Bearer ${token}`)
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -141,7 +141,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().subtract('1', 'hour').toISOString()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('Authorization', `Bearer ${token}`)
+      context.response = await context.request.get('/v1/auth').set('Authorization', `Bearer ${token}`)
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -153,7 +153,7 @@ describe('authentication service - validate token', function () {
       const exp = moment().unix()
       const token = jwt.encode({ sub, exp }, JWT_SECRET)
 
-      context.response = await context.request.get(`/${API_MAJOR_VERSION}/auth`).set('Authorization', `Bearer ${token}`)
+      context.response = await context.request.get('/v1/auth').set('Authorization', `Bearer ${token}`)
 
       expect(context.response.status).to.equal(401)
       expect(context.response.body).to.deep.equal({ error: 'Unauthorised' })
@@ -176,7 +176,7 @@ describe('authentication service - validate token', function () {
     describe('POST user tokens', function () {
       it('should add user token and return 201 using valid user token', async function () {
         context.response = await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
@@ -188,7 +188,7 @@ describe('authentication service - validate token', function () {
 
       it('should add user token and return 401 using invalid user id header', async function () {
         context.response = await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', invalidId)
 
@@ -198,7 +198,7 @@ describe('authentication service - validate token', function () {
 
       it('should add user token and return 401 using invalid user id header', async function () {
         context.response = await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', 0)
 
@@ -208,7 +208,7 @@ describe('authentication service - validate token', function () {
 
       it('should return 401 using invalid user id', async function () {
         context.response = await context.request
-          .post(`/${API_MAJOR_VERSION}/user/0/token`)
+          .post('/v1/user/0/token')
           .send({ name: '', expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
@@ -218,7 +218,7 @@ describe('authentication service - validate token', function () {
 
       it('should return 401 using invalid user id', async function () {
         context.response = await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${invalidId}/token`)
+          .post(`/v1/user/${invalidId}/token`)
           .send({ name: '', expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
@@ -230,7 +230,7 @@ describe('authentication service - validate token', function () {
         const invalidExpiry = moment().subtract('1', 'hour').unix()
 
         context.response = await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: invalidExpiry })
           .set('user-id', `${validUserId}`)
 
@@ -242,7 +242,7 @@ describe('authentication service - validate token', function () {
         const invalidExpiry = moment().add('1', 'hour').unix()
 
         context.response = await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: '', expiry: invalidExpiry })
           .set('user-id', `${validUserId}`)
 
@@ -256,13 +256,11 @@ describe('authentication service - validate token', function () {
         const expectedResult = [{ name: validNameOne, revoked: false }]
 
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
-        context.response = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
-          .set('user-id', `${validUserId}`)
+        context.response = await context.request.get(`/v1/user/${validUserId}/token`).set('user-id', `${validUserId}`)
 
         expect(context.response.status).to.equal(200)
 
@@ -273,18 +271,14 @@ describe('authentication service - validate token', function () {
       })
 
       it('should list user tokens and return 401 using invalid user id header', async function () {
-        context.response = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
-          .set('user-id', invalidId)
+        context.response = await context.request.get(`/v1/user/${validUserId}/token`).set('user-id', invalidId)
 
         expect(context.response.status).to.equal(401)
         expect(context.response.body).to.deep.equal({})
       })
 
       it('should list user tokens and return 401 using invalid user id header', async function () {
-        context.response = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
-          .set('user-id', 0)
+        context.response = await context.request.get(`/v1/user/${validUserId}/token`).set('user-id', 0)
 
         expect(context.response.status).to.equal(401)
         expect(context.response.body).to.deep.equal({})
@@ -294,7 +288,7 @@ describe('authentication service - validate token', function () {
         const invalidExpiry = moment().subtract('1', 'hour').unix()
 
         context.response = await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: invalidExpiry })
           .set('user-id', `${validUserId}`)
 
@@ -303,18 +297,14 @@ describe('authentication service - validate token', function () {
       })
 
       it('should add and list user tokens and return 401 using invalid user id', async function () {
-        context.response = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/0/token`)
-          .set('user-id', `${validUserId}`)
+        context.response = await context.request.get('/v1/user/0/token').set('user-id', `${validUserId}`)
 
         expect(context.response.status).to.equal(401)
         expect(context.response.body).to.deep.equal({})
       })
 
       it('should add and list user tokens and return 401 using invalid user id', async function () {
-        context.response = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${invalidId}/token`)
-          .set('user-id', `${validUserId}`)
+        context.response = await context.request.get(`/v1/user/${invalidId}/token`).set('user-id', `${validUserId}`)
 
         expect(context.response.status).to.equal(401)
         expect(context.response.body).to.deep.equal({})
@@ -324,26 +314,24 @@ describe('authentication service - validate token', function () {
         const validNameTwo = 'userMobileOne'
 
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         const { body: tokenResultsBody } = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .get(`/v1/user/${validUserId}/token`)
           .set('user-id', `${validUserId}`)
 
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameTwo, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         await context.request
-          .delete(`/${API_MAJOR_VERSION}/user/${validUserId}/token/${tokenResultsBody[0].id}`)
+          .delete(`/v1/user/${validUserId}/token/${tokenResultsBody[0].id}`)
           .set('user-id', `${validUserId}`)
 
-        context.response = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
-          .set('user-id', `${validUserId}`)
+        context.response = await context.request.get(`/v1/user/${validUserId}/token`).set('user-id', `${validUserId}`)
 
         const expectedResult = [{ id: tokenResultsBody[0].id, name: validNameTwo, revoked: false }]
 
@@ -359,18 +347,18 @@ describe('authentication service - validate token', function () {
     describe('DELETE revoke user tokens', function () {
       it('should revoke user token and return 200 using valid user token', async function () {
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         const { body: tokenResultsBody } = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .get(`/v1/user/${validUserId}/token`)
           .set('user-id', `${validUserId}`)
 
         const expectedResult = { id: tokenResultsBody[0].id, name: tokenResultsBody[0].name, revoked: true }
 
         context.response = await context.request
-          .delete(`/${API_MAJOR_VERSION}/user/${validUserId}/token/${tokenResultsBody[0].id}`)
+          .delete(`/v1/user/${validUserId}/token/${tokenResultsBody[0].id}`)
           .set('user-id', `${validUserId}`)
 
         expect(context.response.status).to.equal(200)
@@ -382,16 +370,16 @@ describe('authentication service - validate token', function () {
 
       it('should revoke user token and return 401 using invalid user id header', async function () {
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         const { body: tokenResultsBody } = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .get(`/v1/user/${validUserId}/token`)
           .set('user-id', `${validUserId}`)
 
         context.response = await context.request
-          .delete(`/${API_MAJOR_VERSION}/user/${validUserId}/token/${tokenResultsBody[0].id}`)
+          .delete(`/v1/user/${validUserId}/token/${tokenResultsBody[0].id}`)
           .set('user-id', 0)
 
         expect(context.response.status).to.equal(401)
@@ -400,16 +388,16 @@ describe('authentication service - validate token', function () {
 
       it('should revoke user token and return 401 using invalid user id header', async function () {
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         const { body: tokenResultsBody } = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .get(`/v1/user/${validUserId}/token`)
           .set('user-id', `${validUserId}`)
 
         context.response = await context.request
-          .delete(`/${API_MAJOR_VERSION}/user/${validUserId}/token/${tokenResultsBody[0].id}`)
+          .delete(`/v1/user/${validUserId}/token/${tokenResultsBody[0].id}`)
           .set('user-id', invalidId)
 
         expect(context.response.status).to.equal(401)
@@ -419,16 +407,16 @@ describe('authentication service - validate token', function () {
       // ACLs required to further extend this functionality so an admin can revoke any user token and/or disable a user
       it('should return 401 using invalid user id', async function () {
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         const { body: tokenResultsBody } = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .get(`/v1/user/${validUserId}/token`)
           .set('user-id', `${validUserId}`)
 
         context.response = await context.request
-          .delete(`/${API_MAJOR_VERSION}/user/${invalidId}/token/${tokenResultsBody[0].id}`)
+          .delete(`/v1/user/${invalidId}/token/${tokenResultsBody[0].id}`)
           .set('user-id', `${validUserId}`)
 
         expect(context.response.status).to.equal(401)
@@ -437,16 +425,16 @@ describe('authentication service - validate token', function () {
 
       it('should return 401 using invalid user id', async function () {
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         const { body: tokenResultsBody } = await context.request
-          .get(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .get(`/v1/user/${validUserId}/token`)
           .set('user-id', `${validUserId}`)
 
         context.response = await context.request
-          .delete(`/${API_MAJOR_VERSION}/user/0/token/${tokenResultsBody[0].id}`)
+          .delete(`/v1/user/0/token/${tokenResultsBody[0].id}`)
           .set('user-id', `${validUserId}`)
 
         expect(context.response.status).to.equal(401)
@@ -455,12 +443,12 @@ describe('authentication service - validate token', function () {
 
       it('should return 404 using invalid token id', async function () {
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         context.response = await context.request
-          .delete(`/${API_MAJOR_VERSION}/user/${validUserId}/token/${invalidId}`)
+          .delete(`/v1/user/${validUserId}/token/${invalidId}`)
           .set('user-id', `${validUserId}`)
 
         expect(context.response.status).to.equal(404)
@@ -469,12 +457,12 @@ describe('authentication service - validate token', function () {
 
       it('should return 400 using invalid token id', async function () {
         await context.request
-          .post(`/${API_MAJOR_VERSION}/user/${validUserId}/token`)
+          .post(`/v1/user/${validUserId}/token`)
           .send({ name: validNameOne, expiry: validExpiry })
           .set('user-id', `${validUserId}`)
 
         context.response = await context.request
-          .delete(`/${API_MAJOR_VERSION}/user/${validUserId}/token/0`)
+          .delete(`/v1/user/${validUserId}/token/0`)
           .set('user-id', `${validUserId}`)
 
         expect(context.response.status).to.equal(400)

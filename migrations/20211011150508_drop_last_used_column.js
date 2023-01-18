@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export const up = async function (knex) {
   await knex.schema.table('user_tokens', (def) => {
     def.dropColumn('last_used')
   })
@@ -8,7 +8,7 @@ exports.up = async function (knex) {
   })
 }
 
-exports.down = async function (knex) {
+export const down = async function (knex) {
   await knex.schema.table('user_tokens', (def) => {
     def.datetime('last_used').nullable()
   })

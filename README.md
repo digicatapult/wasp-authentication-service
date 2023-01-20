@@ -43,7 +43,6 @@ npm test
 | LOG_LEVEL                          |    N     |         `info`          | Logging level. Valid values are [`trace`, `debug`, `info`, `warn`, `error`, `fatal`] |
 | PORT                               |    N     |          `80`           | Port on which the service will listen                                                |
 | API_VERSION                        |    N     |  `package.json version` | Official API version                                                                 |
-| API_MAJOR_VERSION                  |    N     |          `v1`           | Major API version                                                                    |
 | JWT_SECRET                         |    Y     |            -            | Secret for validating JSON web-tokens                                                |
 | DB_HOST                            |    Y     |            -            | Hostname for the db                                                                  |
 | DB_PORT                            |    N     |          5432           | Port to connect to the db                                                            |

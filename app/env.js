@@ -16,7 +16,6 @@ const vars = envalid.cleanEnv(
     LOG_LEVEL: envalid.str({ default: 'info', devDefault: 'debug' }),
     PORT: envalid.port({ default: 80, devDefault: 3000 }),
     API_VERSION: envalid.str({ default: version }),
-    API_MAJOR_VERSION: envalid.str({ default: 'v1' }),
     JWT_SECRET: envalid.str({ devDefault: 'ogA9ppB$S!dy!hu3Rauvg!L96' }),
     DB_HOST: envalid.host({ devDefault: 'localhost' }),
     DB_PORT: envalid.port({ default: 5432 }),

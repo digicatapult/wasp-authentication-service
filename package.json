@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/wasp-authentication-service",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Authentication Service for WASP",
   "main": "app/index.js",
   "type": "module",
@@ -52,7 +52,7 @@
     "c8": "^7.13.0",
     "chai": "^4.3.7",
     "depcheck": "^1.4.3",
-    "eslint": "^8.36.0",
+    "eslint": "^8.37.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
     "mocha": "^10.2.0",

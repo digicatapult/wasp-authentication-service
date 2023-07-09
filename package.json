@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/wasp-authentication-service",
-  "version": "0.1.35",
+  "version": "0.1.36",
   "description": "Authentication Service for WASP",
   "main": "app/index.js",
   "type": "module",
@@ -47,7 +47,7 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.22.6",
+    "@babel/eslint-parser": "^7.22.7",
     "@babel/plugin-syntax-import-assertions": "^7.22.5",
     "c8": "^7.14.0",
     "chai": "^4.3.7",

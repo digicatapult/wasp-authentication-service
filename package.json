@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/wasp-authentication-service",
-  "version": "0.1.42",
+  "version": "0.1.43",
   "description": "Authentication Service for WASP",
   "main": "app/index.js",
   "type": "module",

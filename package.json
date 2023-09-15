@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/wasp-authentication-service",
-  "version": "0.1.61",
+  "version": "0.1.62",
   "description": "Authentication Service for WASP",
   "main": "app/index.js",
   "type": "module",
@@ -43,7 +43,7 @@
     "pino": "^8.15.1",
     "pino-http": "^8.5.0",
     "swagger-ui-express": "^5.0.0",
-    "uuid": "^9.0.0",
+    "uuid": "^9.0.1",
     "validator": "^13.11.0"
   },
   "devDependencies": {

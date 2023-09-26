@@ -1,6 +1,6 @@
 {
   "name": "@digicatapult/wasp-authentication-service",
-  "version": "0.1.63",
+  "version": "0.1.64",
   "description": "Authentication Service for WASP",
   "main": "app/index.js",
   "type": "module",
@@ -33,7 +33,7 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "envalid": "^7.3.1",
+    "envalid": "^8.0.0",
     "express": "^4.18.2",
     "express-openapi": "^12.1.3",
     "jwt-simple": "^0.5.6",

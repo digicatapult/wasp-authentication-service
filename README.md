@@ -1,5 +1,9 @@
 # wasp-authentication-service
 
+## Deprecation Notice
+`WASP` was deprecated on March 14th 2024, there will be no further dependency or security updates to this platform.
+---
+
 Authentication service for `WASP`. Handles the storage, retrieval and validation of tokens.
 
 ## Getting started
